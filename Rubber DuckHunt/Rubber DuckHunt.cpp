@@ -87,10 +87,12 @@ string get_keylogged(const vector<KeyInfo>& key_buffer) {
 
 // Print the Key_buffer content
 void print_keylogged(const vector<KeyInfo>& key_buffer) {
+    /* Print buffer information
     cout << "Key buffer:" << endl;
     for (const KeyInfo& key_info : key_buffer) {
         cout << "Key: " << key_info.key_name.c_str() << ", Elapsed time : " << key_info.elapsed_time << endl;
     }
+    */
     cout << "Key_captured: " << endl;
     for (const KeyInfo& key_info : key_buffer) {
         cout << "[" << key_info.key_name.c_str() << "]";
@@ -102,7 +104,7 @@ bool detection_keystroke_speed(double keylogged_average) {
     // limit to 1 detection
     if (!keystroke_speed) {
         // Verify if speed of keystroke is normal
-        if (keylogged_average < 0.006 && keylogged_average != -1) {
+        if (keylogged_average < 0.026 && keylogged_average != -1) {
             cout << "[*] Abnormal keystroke speed detected!" << endl;
             keystroke_speed = true;
             const wchar_t* eventmessage = L"Abnormal keystroke speed detected!";
@@ -324,7 +326,7 @@ int main() {
     t_newkeyboard.detach();
 
     // Thread to reset flag every X minutes (5)
-    int reset_timer = 1;
+    int reset_timer = 5;
     thread t_resetflag(resetDetectionFlags, reset_timer);
     t_resetflag.detach();
 
@@ -370,7 +372,7 @@ int main() {
     }
 
 
-
+    
 
     // Uninstall the hook
     UnhookWindowsHookEx(hook);

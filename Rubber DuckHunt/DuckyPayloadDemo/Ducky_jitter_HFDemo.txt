@@ -1,0 +1,17 @@
+ATTACKMODE HID
+$_JITTER_ENABLED = TRUE
+DELAY 1000
+GUI r
+DELAY 500
+STRINGLN powershell
+DELAY 2000
+STRINGLN notepad.exe
+DELAY 2000
+GUI UP
+CTRL =
+CTRL =
+CTRL =
+CTRL =
+CTRL =
+DELAY 500
+STRINGLN If My Calculations Are Correct, When This Baby Hits 1280 Keystrokes Per Second, You're Gonna See Some Serious Shit!
