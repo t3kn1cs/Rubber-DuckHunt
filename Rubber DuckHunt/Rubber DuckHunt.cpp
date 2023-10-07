@@ -74,6 +74,62 @@ BOOL report_event(const wchar_t* eventmessage, WORD eventtype) {
     return 0;
 }
 
+// Function to verify sequence of key in Vector
+bool checkForKeySequence(const vector<KeyInfo>& data, const vector<string>& sequence) {
+    size_t dataIndex = 0;
+    size_t sequenceIndex = 0;
+
+    while (dataIndex < data.size()) {
+        if (data[dataIndex].key_name == sequence[sequenceIndex]) {
+            sequenceIndex++;
+            if (sequenceIndex == sequence.size()) {
+                return true;
+            }
+        }
+        else {
+            sequenceIndex = 0;  // Reset sequence index if the key does not match
+        }
+        dataIndex++;
+    }
+
+    return false;
+}
+
+// THREAD Function to reset the detection flags
+void detection_keystroke_pattern() {
+    while (!exitProgram) {
+
+        vector<vector<string>> keySequences = {
+            {"Left Windows", "R"},
+            {"Left Windows", "DOWN"},
+            {"ALT", "F4"}
+        };
+
+        while (!keystroke_pattern) {
+            //cout << "[*] Keystroke Pattern Check Engaged";
+            for (const auto& sequence : keySequences) {
+                if (checkForKeySequence(*keylogged, sequence)) {
+                    cout << "[*] Keystroke Pattern Detected: ";
+                    for (const auto& key : sequence) {
+                        cout << "[" << key << "]";
+                    }
+                    cout << endl;
+                    // Set Pattern detection flag to true
+                    keystroke_pattern = true;
+
+                    // Report to eventvwr
+                    const wchar_t* eventmessage = L"Abnormal keystroke pattern detected!";
+                    report_event(eventmessage, EVENTLOG_WARNING_TYPE);
+                }
+            }
+
+            this_thread::sleep_for(chrono::seconds(1));
+        }
+    }
+}
+
+
+
 // Function to Get String of Keylogged
 string get_keylogged(const vector<KeyInfo>& key_buffer) {
     string klogged;
@@ -329,6 +385,12 @@ int main() {
     int reset_timer = 5;
     thread t_resetflag(resetDetectionFlags, reset_timer);
     t_resetflag.detach();
+
+    // Thread to detect keystroke pattern in buffer
+    thread t_keypattern(detection_keystroke_pattern);
+    t_keypattern.detach();
+
+
 
     // keylogger buffer size, determined how many keys will be kept in the Vector
     int keylogger_buffer_size = 10000;
