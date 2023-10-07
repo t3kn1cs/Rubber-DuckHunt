@@ -95,7 +95,7 @@ bool checkForKeySequence(const vector<KeyInfo>& data, const vector<string>& sequ
     return false;
 }
 
-// THREAD Function to reset the detection flags
+// THREAD Function to detect keystroke patterns
 void detection_keystroke_pattern() {
     while (!exitProgram) {
 
@@ -128,7 +128,44 @@ void detection_keystroke_pattern() {
     }
 }
 
+// Function to verify words in Vector
+bool checkForWord(const vector<KeyInfo>& data, const string& word) {
+    string concatenatedKeys;
+    for (const auto& keyInfo : data) {
+        concatenatedKeys += keyInfo.key_name;
+    }
+    return concatenatedKeys.find(word) != string::npos;
+}
 
+// THREAD function to detect keywords
+void detection_keystroke_words() {
+    
+    vector<string> keyWords = {
+        "POWERSHELL",
+        "BYPASS",
+        "USER",
+        "NEW-OBJECT"
+        };
+
+    while (!exitProgram) {
+        //cout << "[*] Keystroke Words Check Engaged" << endl;
+        while (!keystroke_words) {
+            for (const auto& word : keyWords) {
+                if (checkForWord(*keylogged, word)) {
+                    cout << "[*] Key Words Detected: [" << word << "]" << endl;
+                    
+                    // Set Keystroke flag to true if a word is found
+                    keystroke_words = true;
+
+                    // Report to eventvwr
+                    const wchar_t* eventmessage = L"Abnormal keystroke pattern detected!";
+                    report_event(eventmessage, EVENTLOG_WARNING_TYPE);
+                }
+            }
+            this_thread::sleep_for(chrono::seconds(1));
+        }
+    }
+}
 
 // Function to Get String of Keylogged
 string get_keylogged(const vector<KeyInfo>& key_buffer) {
@@ -143,12 +180,12 @@ string get_keylogged(const vector<KeyInfo>& key_buffer) {
 
 // Print the Key_buffer content
 void print_keylogged(const vector<KeyInfo>& key_buffer) {
-    /* Print buffer information
+    // Print buffer information
     cout << "Key buffer:" << endl;
     for (const KeyInfo& key_info : key_buffer) {
         cout << "Key: " << key_info.key_name.c_str() << ", Elapsed time : " << key_info.elapsed_time << endl;
     }
-    */
+    
     cout << "Key_captured: " << endl;
     for (const KeyInfo& key_info : key_buffer) {
         cout << "[" << key_info.key_name.c_str() << "]";
@@ -390,10 +427,13 @@ int main() {
     thread t_keypattern(detection_keystroke_pattern);
     t_keypattern.detach();
 
-
+    // Thread to detect keystroke words in buffer
+    thread t_keywords(detection_keystroke_words);
+    t_keywords.detach();
 
     // keylogger buffer size, determined how many keys will be kept in the Vector
     int keylogger_buffer_size = 10000;
+    
     // Create a vector object
     vector<KeyInfo> keyPressData;
     keyPressData.reserve(keylogger_buffer_size);
