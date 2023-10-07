@@ -97,14 +97,13 @@ bool checkForKeySequence(const vector<KeyInfo>& data, const vector<string>& sequ
 
 // THREAD Function to detect keystroke patterns
 void detection_keystroke_pattern() {
-    while (!exitProgram) {
-
-        vector<vector<string>> keySequences = {
-            {"Left Windows", "R"},
-            {"Left Windows", "DOWN"},
-            {"ALT", "F4"}
+    vector<vector<string>> keySequences = {
+        {"Left Windows", "R"},
+        {"WINDOWS GAUCHE", "R"},
+        {"Left Windows", "DOWN"},
+        {"ALT", "F4"}
         };
-
+    while (!exitProgram) {
         while (!keystroke_pattern) {
             //cout << "[*] Keystroke Pattern Check Engaged";
             for (const auto& sequence : keySequences) {
@@ -125,6 +124,7 @@ void detection_keystroke_pattern() {
 
             this_thread::sleep_for(chrono::seconds(1));
         }
+    this_thread::sleep_for(chrono::seconds(1));
     }
 }
 
@@ -158,12 +158,13 @@ void detection_keystroke_words() {
                     keystroke_words = true;
 
                     // Report to eventvwr
-                    const wchar_t* eventmessage = L"Abnormal keystroke pattern detected!";
+                    const wchar_t* eventmessage = L"Abnormal keystroke Word detected!";
                     report_event(eventmessage, EVENTLOG_WARNING_TYPE);
                 }
             }
             this_thread::sleep_for(chrono::seconds(1));
         }
+    this_thread::sleep_for(chrono::seconds(1));
     }
 }
 
@@ -304,7 +305,7 @@ void detect_new_keyboards() {
         this_thread::sleep_for(chrono::seconds(1));
     }
     if (verbose) {
-        cout << "[*] Closing detect_new_keyboards thread" << endl;
+        cout << endl << "[*] Closing detect_new_keyboards thread" << endl;
     }
 }
 
