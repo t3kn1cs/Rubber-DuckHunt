@@ -14,4 +14,4 @@ CTRL =
 CTRL =
 CTRL =
 DELAY 500
-STRINGLN If My Calculations Are Correct, When This Baby Hits 1280 Keystrokes Per Second, You're Gonna See Some Serious Shit!
+STRINGLN If My Calculations Are Correct, When This Baby Hits 38 Keystrokes Per Second, You're Gonna See Some Serious Shit!
