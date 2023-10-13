@@ -2,6 +2,10 @@
 
 Rubber DuckHunt is a program that captures key presses and keeps track of certain statistics about the captured key presses, such as the time between presses and the keys that have been pressed. It also has logic for detecting abnormal keystroke patterns, such as an unusual keystroke speed, and can output this information to the console or the Windows event log..
 
+## Hackfest 2023 presentation (Francais)
+https://tome.app/ccnb-cyse-piratageethique/rubber-duckhunt-detection-de-lattaque-par-injection-de-frappe-clmuneydo03vyo77c98y0bhai
+
+
 ## Building
 
 This program can be built on Windows with Visual Studio, using the following steps:
