@@ -142,7 +142,7 @@ void detection_keystroke_words() {
     
     vector<string> keyWords = {
         "POWERSHELL",
-        "BYPASS",
+        "CMD.EXE",
         "USER",
         "NEW-OBJECT"
         };
