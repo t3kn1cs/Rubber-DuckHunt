@@ -29,11 +29,14 @@ If something suspicious is detected, you can find the log in the Windows Applica
 
 When in DEBUG mode,   ESC key to close the program
 
+## Future Features
+- Encrypt keystrokes in memory.
+- Add program menu to configure parameters.
+- Log events with malicious payloads.
+- Intercept keystrokes when KeystrokeInjection is confirmed.
+- Implement an authorization mechanism to add additional keyboards.
+
 ## Note
 
 It's important to keep in mind that the use of keyloggers is generally illegal and unethical, unless it is done with the informed consent of the people being monitored. Additionally, it is a best practice to keep this kind of software on a secure network, and the use should be compliant with the laws and regulations of the countries or states where the software will be used.
-
-Plus... it appear that this keylogging technique is not flag by popular EDR vendors.
-
-![image](https://github.com/t3kn1cs/Rubber-DuckHunt/assets/7936289/e8cb6760-ad3e-468d-a7ba-f2cbeb185e21)
 
